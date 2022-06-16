@@ -11,6 +11,7 @@ Vue.use(VueRouter)
 
 export default new VueRouter({
     mode: 'history',
+    base: '/vue-network-demo',
     routes: [
         {
             path: '/D3Js',

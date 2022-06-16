@@ -6,10 +6,7 @@
         Libraries
         <ul>
           <li>
-            <router-link to="/VueVis">VueVis.js</router-link>
-          </li>
-          <li>
-            <router-link to="/D3Js">D3.js</router-link>
+            <router-link to='/D3Js' >D3.js</router-link>
           </li>
           <li>
             <router-link to="/D3Vue">Vue-d3.js</router-link>
@@ -17,7 +14,9 @@
           <li>
             <router-link to="/VisJs">Vis.js</router-link>
           </li>
-
+          <li>
+            <router-link to="/VueVis">VueVis.js</router-link>
+          </li>
         </ul>
 
       </v-navigation-drawer>
