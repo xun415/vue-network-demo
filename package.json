@@ -5,11 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "@vue2vis/network": "^1.0.1-alpha.78",
     "core-js": "^3.8.3",
+    "gh-pages": "^4.0.0",
     "moment": "^2.29.3",
     "vis-data": "^7.1.4",
     "vis-network": "^9.1.2",
@@ -51,5 +54,7 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "homepage": "https://xun415.github.io/vue-network-demo"
+
 }
