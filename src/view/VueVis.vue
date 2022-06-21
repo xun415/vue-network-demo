@@ -79,54 +79,152 @@ export default {
       nodes: nodesParsed,
       edges: linkParsed,
 
-      options: {
-        physics: {
+      options:{
+        filter: true,
+        // https://github.com/almende/vis/issues/2906
+        // fail
+        // layout: {
+        //   randomSeed: 191006,
+        //   improvedLayout: false
+        // },
+        // physics: {
+        //   adaptiveTimestep: true,
+        //   barnesHut: {
+        //     gravitationalConstant: -8000,
+        //     springConstant: 0.04,
+        //     springLength: 95
+        //   },
+        //   stabilization: {
+        //     iterations: 987
+        //   }
+        // }
 
+        // https://almende.github.io/vis/examples/network/exampleApplications/worldCupPerformance.html
+        // fail
+        // physics: {
+        //   barnesHut: {gravitationalConstant: -80000, springConstant: 0.001, springLength: 200}
+        // },
+
+        // https://github.com/almende/vis/issues/2868
+        // 성공했으나 원들이 원 모양으로 생기고 가운데가 선으로 가득 채워진 형태
+        // layout: {
+        //   improvedLayout: true
+        // },
+        // physics: {
+        //   enabled: false
+        // },
+
+          // enabled: false,
+        // fail
+        // layout: {
+        //   improvedLayout: false
+        // },
+        // physics: {
+        //   stabilization: {
+        //     iterations: 500
+        //   },
+        //   barnesHut: {
+        //     // springConstant: 0,
+        //     avoidOverlap: 1,
+        //     gravitationalConstant: -1000000,
+        //     springConstant: 0.001,
+        //     springLength: 10
+        //   }
+        // },
+        // https://github.com/almende/vis/issues/2868
+        // 성공, 계속 움직임
+        // layout: {
+        //   randomSeed: 191006,    // Optional; insert your value here
+        //   improvedLayout: false
+        // },
+        //
+        // physics: {
+        //   enabled: true,
+        //   stabilization: {
+        //     iterations: 1,      // Change this to whatever is convenient for you
+        //     // onlyDynamicEdges: true,
+        //   }
+        // },
+
+        //https://stackoverflow.com/questions/64951943/vis-js-how-to-spread-nodes-evanly-on-all-canvas-and-avoid-text-overlapping
+        // fail
+        // physics: {
+        //   barnesHut: {
+        //     "gravitationalConstant": -3900,
+        //     "centralGravity": 0
+        //   },
+        //   minVelocity: 1
+        // },
+
+        // https://stackoverflow.com/questions/60080433/vis-js-network-hierarchical-layout-issue-related-to-number-of-nodes
+        // 트리구조. 그려지는것 ok, 연결 길이값 정확도 불
+        // layout: {
+        //   randomSeed: 1,
+        //   improvedLayout: false,
+        //   hierarchical: {
+        //     enabled: true,
+        //     levelSeparation: 150,
+        //     nodeSpacing: 110,
+        //     treeSpacing: 200,
+        //     blockShifting: false,
+        //     edgeMinimization: true,
+        //     parentCentralization: true,
+        //     direction: "LR",
+        //     sortMethod: "directed",
+        //     shakeTowards: "roots"
+        //   }
+        // },
+
+        // fail
+        // physics:{
+        //   barnesHut: {
+        //     springLength: 1000,
+        //     springConstant: 1,
+        //     avoidOverlap: 1
+        //   },
+        // },
+
+
+
+
+
+        // interaction: {
+        //   tooltipDelay: 200,
+        //   hideEdgesOnDrag: true
+        // },
+        physics: {
+          stabilization: false,
           barnesHut: {
-            gravitationalConstant: -1000000,
+            gravitationalConstant: -80000,
             springConstant: 0.001,
-            springLength: 200
-          }
+            springLength: 200,
+          },
         },
         interaction: {
           tooltipDelay: 200,
-          hideEdgesOnDrag: true
+          hideEdgesOnDrag: true,
         },
-
 
         nodes: {
-
-          shape: "circle",
+          shape:'circle',
           scaling: {
-            label: {
-              enabled: true,
-              min: 20,
-              max: 500
-            }
+            min: 10,
+            max: 50,
           },
-          // scaling: {
-          //   min: 10,
-          //   max: 500,
-          //   label: {
-          //     enabled: false,
-          //     min: 14,
-          //     max: 50,
-          //     maxVisible: 30,
-          //     drawThreshold: 5
-          //   },
-          //   // customScalingFunction: function (min,max,total,value) {
-          //   //   if (max === min) {
-          //   //     return 0.5;
-          //   //   }
-          //   //   else {
-          //   //     let scale = 1 / (max - min);
-          //   //     return Math.max(0,(value - min)*scale);
-          //   //   }
-          //   // }
-          // },
-
+          font: {
+            size: 12,
+            face: "Tahoma",
+          },
         },
-
+        edges: {
+          color:{
+            color: 'rgba(0, 0, 0, 0.1)',
+            highlight: 'rgba(0, 0, 0, 1)'
+          },
+          smooth: {
+            type: 'straightCross'
+          }
+        }
       }
     }
 
