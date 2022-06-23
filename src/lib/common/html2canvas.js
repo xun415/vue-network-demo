@@ -29,7 +29,7 @@ export function fileDownload(data, fileName) {
  * @param fileName 파일명
  */
 export async function downloadHtmlToImg(targetElement, fileName) {
-	const canvas =  await html2canvas(targetElement, {backgroundColor: null})
+	const canvas =  await html2canvas(targetElement, {backgroundColor: null, scale: 2})
 	console.log(canvas)
 	const imageUrl = canvas.toDataURL('image/png')
 	const blob = await (await fetch(imageUrl)).blob();
