@@ -1,367 +1,331 @@
 <template>
   <div>
     <h1>Vis.js</h1>
-    <DataInfo />
+    <p>
+      A Vuejs 2 adapter for Visjs
 
-    <div id="mynetwork"></div>
+    </p>
+    <DataInfo></DataInfo>
+    <div id="graphDiv"></div>
+    <div class="downloadBtn">
+      <button type="button" @click="downloadImage">Download</button>
+    </div>
+    <button @click="removeCurrSelectedNode">Remove Node</button>
+
   </div>
 </template>
 
 <script>
-import "vis-network/styles/vis-network.css";
+import { Network } from 'vis-network'
 import DataInfo from "@/components/DataInfo";
-// var nodes = new DataSet([
-//   { id: 0, label: "Myriel", group: 1 },
-//   { id: 1, label: "Napoleon", group: 1 },
-//   { id: 2, label: "Mlle.Baptistine", group: 1 },
-//   { id: 3, label: "Mme.Magloire", group: 1 },
-//   { id: 4, label: "CountessdeLo", group: 1 },
-//   { id: 5, label: "Geborand", group: 1 },
-//   { id: 6, label: "Champtercier", group: 1 },
-//   { id: 7, label: "Cravatte", group: 1 },
-//   { id: 8, label: "Count", group: 1 },
-//   { id: 9, label: "OldMan", group: 1 },
-//   { id: 10, label: "Labarre", group: 2 },
-//   { id: 11, label: "Valjean", group: 2 },
-//   { id: 12, label: "Marguerite", group: 3 },
-//   { id: 13, label: "Mme.deR", group: 2 },
-//   { id: 14, label: "Isabeau", group: 2 },
-//   { id: 15, label: "Gervais", group: 2 },
-//   { id: 16, label: "Tholomyes", group: 3 },
-//   { id: 17, label: "Listolier", group: 3 },
-//   { id: 18, label: "Fameuil", group: 3 },
-//   { id: 19, label: "Blacheville", group: 3 },
-//   { id: 20, label: "Favourite", group: 3 },
-//   { id: 21, label: "Dahlia", group: 3 },
-//   { id: 22, label: "Zephine", group: 3 },
-//   { id: 23, label: "Fantine", group: 3 },
-//   { id: 24, label: "Mme.Thenardier", group: 4 },
-//   { id: 25, label: "Thenardier", group: 4 },
-//   { id: 26, label: "Cosette", group: 5 },
-//   { id: 27, label: "Javert", group: 4 },
-//   { id: 28, label: "Fauchelevent", group: 0 },
-//   { id: 29, label: "Bamatabois", group: 2 },
-//   { id: 30, label: "Perpetue", group: 3 },
-//   { id: 31, label: "Simplice", group: 2 },
-//   { id: 32, label: "Scaufflaire", group: 2 },
-//   { id: 33, label: "Woman1", group: 2 },
-//   { id: 34, label: "Judge", group: 2 },
-//   { id: 35, label: "Champmathieu", group: 2 },
-//   { id: 36, label: "Brevet", group: 2 },
-//   { id: 37, label: "Chenildieu", group: 2 },
-//   { id: 38, label: "Cochepaille", group: 2 },
-//   { id: 39, label: "Pontmercy", group: 4 },
-//   { id: 40, label: "Boulatruelle", group: 6 },
-//   { id: 41, label: "Eponine", group: 4 },
-//   { id: 42, label: "Anzelma", group: 4 },
-//   { id: 43, label: "Woman2", group: 5 },
-//   { id: 44, label: "MotherInnocent", group: 0 },
-//   { id: 45, label: "Gribier", group: 0 },
-//   { id: 46, label: "Jondrette", group: 7 },
-//   { id: 47, label: "Mme.Burgon", group: 7 },
-//   { id: 48, label: "Gavroche", group: 8 },
-//   { id: 49, label: "Gillenormand", group: 5 },
-//   { id: 50, label: "Magnon", group: 5 },
-//   { id: 51, label: "Mlle.Gillenormand", group: 5 },
-//   { id: 52, label: "Mme.Pontmercy", group: 5 },
-//   { id: 53, label: "Mlle.Vaubois", group: 5 },
-//   { id: 54, label: "Lt.Gillenormand", group: 5 },
-//   { id: 55, label: "Marius", group: 8 },
-//   { id: 56, label: "BaronessT", group: 5 },
-//   { id: 57, label: "Mabeuf", group: 8 },
-//   { id: 58, label: "Enjolras", group: 8 },
-//   { id: 59, label: "Combeferre", group: 8 },
-//   { id: 60, label: "Prouvaire", group: 8 },
-//   { id: 61, label: "Feuilly", group: 8 },
-//   { id: 62, label: "Courfeyrac", group: 8 },
-//   { id: 63, label: "Bahorel", group: 8 },
-//   { id: 64, label: "Bossuet", group: 8 },
-//   { id: 65, label: "Joly", group: 8 },
-//   { id: 66, label: "Grantaire", group: 8 },
-//   { id: 67, label: "MotherPlutarch", group: 9 },
-//   { id: 68, label: "Gueulemer", group: 4 },
-//   { id: 69, label: "Babet", group: 4 },
-//   { id: 70, label: "Claquesous", group: 4 },
-//   { id: 71, label: "Montparnasse", group: 4 },
-//   { id: 72, label: "Toussaint", group: 5 },
-//   { id: 73, label: "Child1", group: 10 },
-//   { id: 74, label: "Child2", group: 10 },
-//   { id: 75, label: "Brujon", group: 4 },
-//   { id: 76, label: "Mme.Hucheloup", group: 8 },
-// ]);
-//
-// // create some edges
-// var edges = new DataSet([
-//   { from: 1, to: 0 },
-//   { from: 2, to: 0 },
-//   { from: 3, to: 0 },
-//   { from: 3, to: 2 },
-//   { from: 4, to: 0 },
-//   { from: 5, to: 0 },
-//   { from: 6, to: 0 },
-//   { from: 7, to: 0 },
-//   { from: 8, to: 0 },
-//   { from: 9, to: 0 },
-//   { from: 11, to: 10 },
-//   { from: 11, to: 3 },
-//   { from: 11, to: 2 },
-//   { from: 11, to: 0 },
-//   { from: 12, to: 11 },
-//   { from: 13, to: 11 },
-//   { from: 14, to: 11 },
-//   { from: 15, to: 11 },
-//   { from: 17, to: 16 },
-//   { from: 18, to: 16 },
-//   { from: 18, to: 17 },
-//   { from: 19, to: 16 },
-//   { from: 19, to: 17 },
-//   { from: 19, to: 18 },
-//   { from: 20, to: 16 },
-//   { from: 20, to: 17 },
-//   { from: 20, to: 18 },
-//   { from: 20, to: 19 },
-//   { from: 21, to: 16 },
-//   { from: 21, to: 17 },
-//   { from: 21, to: 18 },
-//   { from: 21, to: 19 },
-//   { from: 21, to: 20 },
-//   { from: 22, to: 16 },
-//   { from: 22, to: 17 },
-//   { from: 22, to: 18 },
-//   { from: 22, to: 19 },
-//   { from: 22, to: 20 },
-//   { from: 22, to: 21 },
-//   { from: 23, to: 16 },
-//   { from: 23, to: 17 },
-//   { from: 23, to: 18 },
-//   { from: 23, to: 19 },
-//   { from: 23, to: 20 },
-//   { from: 23, to: 21 },
-//   { from: 23, to: 22 },
-//   { from: 23, to: 12 },
-//   { from: 23, to: 11 },
-//   { from: 24, to: 23 },
-//   { from: 24, to: 11 },
-//   { from: 25, to: 24 },
-//   { from: 25, to: 23 },
-//   { from: 25, to: 11 },
-//   { from: 26, to: 24 },
-//   { from: 26, to: 11 },
-//   { from: 26, to: 16 },
-//   { from: 26, to: 25 },
-//   { from: 27, to: 11 },
-//   { from: 27, to: 23 },
-//   { from: 27, to: 25 },
-//   { from: 27, to: 24 },
-//   { from: 27, to: 26 },
-//   { from: 28, to: 11 },
-//   { from: 28, to: 27 },
-//   { from: 29, to: 23 },
-//   { from: 29, to: 27 },
-//   { from: 29, to: 11 },
-//   { from: 30, to: 23 },
-//   { from: 31, to: 30 },
-//   { from: 31, to: 11 },
-//   { from: 31, to: 23 },
-//   { from: 31, to: 27 },
-//   { from: 32, to: 11 },
-//   { from: 33, to: 11 },
-//   { from: 33, to: 27 },
-//   { from: 34, to: 11 },
-//   { from: 34, to: 29 },
-//   { from: 35, to: 11 },
-//   { from: 35, to: 34 },
-//   { from: 35, to: 29 },
-//   { from: 36, to: 34 },
-//   { from: 36, to: 35 },
-//   { from: 36, to: 11 },
-//   { from: 36, to: 29 },
-//   { from: 37, to: 34 },
-//   { from: 37, to: 35 },
-//   { from: 37, to: 36 },
-//   { from: 37, to: 11 },
-//   { from: 37, to: 29 },
-//   { from: 38, to: 34 },
-//   { from: 38, to: 35 },
-//   { from: 38, to: 36 },
-//   { from: 38, to: 37 },
-//   { from: 38, to: 11 },
-//   { from: 38, to: 29 },
-//   { from: 39, to: 25 },
-//   { from: 40, to: 25 },
-//   { from: 41, to: 24 },
-//   { from: 41, to: 25 },
-//   { from: 42, to: 41 },
-//   { from: 42, to: 25 },
-//   { from: 42, to: 24 },
-//   { from: 43, to: 11 },
-//   { from: 43, to: 26 },
-//   { from: 43, to: 27 },
-//   { from: 44, to: 28 },
-//   { from: 44, to: 11 },
-//   { from: 45, to: 28 },
-//   { from: 47, to: 46 },
-//   { from: 48, to: 47 },
-//   { from: 48, to: 25 },
-//   { from: 48, to: 27 },
-//   { from: 48, to: 11 },
-//   { from: 49, to: 26 },
-//   { from: 49, to: 11 },
-//   { from: 50, to: 49 },
-//   { from: 50, to: 24 },
-//   { from: 51, to: 49 },
-//   { from: 51, to: 26 },
-//   { from: 51, to: 11 },
-//   { from: 52, to: 51 },
-//   { from: 52, to: 39 },
-//   { from: 53, to: 51 },
-//   { from: 54, to: 51 },
-//   { from: 54, to: 49 },
-//   { from: 54, to: 26 },
-//   { from: 55, to: 51 },
-//   { from: 55, to: 49 },
-//   { from: 55, to: 39 },
-//   { from: 55, to: 54 },
-//   { from: 55, to: 26 },
-//   { from: 55, to: 11 },
-//   { from: 55, to: 16 },
-//   { from: 55, to: 25 },
-//   { from: 55, to: 41 },
-//   { from: 55, to: 48 },
-//   { from: 56, to: 49 },
-//   { from: 56, to: 55 },
-//   { from: 57, to: 55 },
-//   { from: 57, to: 41 },
-//   { from: 57, to: 48 },
-//   { from: 58, to: 55 },
-//   { from: 58, to: 48 },
-//   { from: 58, to: 27 },
-//   { from: 58, to: 57 },
-//   { from: 58, to: 11 },
-//   { from: 59, to: 58 },
-//   { from: 59, to: 55 },
-//   { from: 59, to: 48 },
-//   { from: 59, to: 57 },
-//   { from: 60, to: 48 },
-//   { from: 60, to: 58 },
-//   { from: 60, to: 59 },
-//   { from: 61, to: 48 },
-//   { from: 61, to: 58 },
-//   { from: 61, to: 60 },
-//   { from: 61, to: 59 },
-//   { from: 61, to: 57 },
-//   { from: 61, to: 55 },
-//   { from: 62, to: 55 },
-//   { from: 62, to: 58 },
-//   { from: 62, to: 59 },
-//   { from: 62, to: 48 },
-//   { from: 62, to: 57 },
-//   { from: 62, to: 41 },
-//   { from: 62, to: 61 },
-//   { from: 62, to: 60 },
-//   { from: 63, to: 59 },
-//   { from: 63, to: 48 },
-//   { from: 63, to: 62 },
-//   { from: 63, to: 57 },
-//   { from: 63, to: 58 },
-//   { from: 63, to: 61 },
-//   { from: 63, to: 60 },
-//   { from: 63, to: 55 },
-//   { from: 64, to: 55 },
-//   { from: 64, to: 62 },
-//   { from: 64, to: 48 },
-//   { from: 64, to: 63 },
-//   { from: 64, to: 58 },
-//   { from: 64, to: 61 },
-//   { from: 64, to: 60 },
-//   { from: 64, to: 59 },
-//   { from: 64, to: 57 },
-//   { from: 64, to: 11 },
-//   { from: 65, to: 63 },
-//   { from: 65, to: 64 },
-//   { from: 65, to: 48 },
-//   { from: 65, to: 62 },
-//   { from: 65, to: 58 },
-//   { from: 65, to: 61 },
-//   { from: 65, to: 60 },
-//   { from: 65, to: 59 },
-//   { from: 65, to: 57 },
-//   { from: 65, to: 55 },
-//   { from: 66, to: 64 },
-//   { from: 66, to: 58 },
-//   { from: 66, to: 59 },
-//   { from: 66, to: 62 },
-//   { from: 66, to: 65 },
-//   { from: 66, to: 48 },
-//   { from: 66, to: 63 },
-//   { from: 66, to: 61 },
-//   { from: 66, to: 60 },
-//   { from: 67, to: 57 },
-//   { from: 68, to: 25 },
-//   { from: 68, to: 11 },
-//   { from: 68, to: 24 },
-//   { from: 68, to: 27 },
-//   { from: 68, to: 48 },
-//   { from: 68, to: 41 },
-//   { from: 69, to: 25 },
-//   { from: 69, to: 68 },
-//   { from: 69, to: 11 },
-//   { from: 69, to: 24 },
-//   { from: 69, to: 27 },
-//   { from: 69, to: 48 },
-//   { from: 69, to: 41 },
-//   { from: 70, to: 25 },
-//   { from: 70, to: 69 },
-//   { from: 70, to: 68 },
-//   { from: 70, to: 11 },
-//   { from: 70, to: 24 },
-//   { from: 70, to: 27 },
-//   { from: 70, to: 41 },
-//   { from: 70, to: 58 },
-//   { from: 71, to: 27 },
-//   { from: 71, to: 69 },
-//   { from: 71, to: 68 },
-//   { from: 71, to: 70 },
-//   { from: 71, to: 11 },
-//   { from: 71, to: 48 },
-//   { from: 71, to: 41 },
-//   { from: 71, to: 25 },
-//   { from: 72, to: 26 },
-//   { from: 72, to: 27 },
-//   { from: 72, to: 11 },
-//   { from: 73, to: 48 },
-//   { from: 74, to: 48 },
-//   { from: 74, to: 73 },
-//   { from: 75, to: 69 },
-//   { from: 75, to: 68 },
-//   { from: 75, to: 25 },
-//   { from: 75, to: 48 },
-//   { from: 75, to: 41 },
-//   { from: 75, to: 70 },
-//   { from: 75, to: 71 },
-//   { from: 76, to: 64 },
-//   { from: 76, to: 65 },
-//   { from: 76, to: 66 },
-//   { from: 76, to: 63 },
-//   { from: 76, to: 62 },
-//   { from: 76, to: 48 },
-//   { from: 76, to: 58 },
-// ]);
+import "vis-network/styles/vis-network.css";
+import {downloadHtmlToImg} from "@/lib/common/html2canvas";
+import node from "@/jsonData/node2.json"
+import link from "@/jsonData/link2.json"
+const nodeJson = node;
+const linkJson = link;
+
+const defNodes = Object.keys(nodeJson).map(key => {
+  return {
+    id: key,
+    title: `${key} : ${nodeJson[key]}`,
+    label: key,
+    value: nodeJson[key],
+    font: {
+      color: 'black'
+    }
+  }
+})
+console.log('nodesParsed', defNodes)
+
+const defLink = linkJson.map(link => {
+  return {
+
+    // length: (link[0]),
+    length: link[0] * 10000,
+    from: link[1].split(',')[0],
+    to: link[1].split(',')[1],
+    title: `from: ${link[1].split(',')[0]}, to: ${link[1].split(',')[1]}`,
+  }
+})
+console.log('linkParsed', defLink)
+window.vis = null
+
 
 export default {
   name: "VisJs",
 
   components: {
-    DataInfo
+    DataInfo,
   },
 
+  mounted() {
+    const graphDiv = document.getElementById('graphDiv');
+    const data = {nodes: this.network.nodes, edges: this.network.edges}
+    const network = new Network(graphDiv, data ,this.network.options);
+    network.on('selectNode', this.onSelectNode)
+    network.on('dragStart', this.onDragStart)
+    network.on('deselectNode', this.onDeselectNode)
+    network.on('afterDrawing', this.onFinishDrawing)
+    this.network.ref = network
+    window.vis = network
+  },
+
+  data: () => ({
+    networkEvents: "",
+    network: {
+      ref: null,
+      nodes: defNodes.slice(0),
+      edges: defLink.slice(0),
+      isLoaded: false, // 그래프 초기로딩 완료 여부
+      selectedNodeId: null, // 선택된 노드 id
+      manipulation: {
+        enabled: true,
+      },
+      options: {
+        // 군집. -중력으로 퍼트리게.
+        physics: {
+          enabled: true,
+          solver: 'barnesHut',
+          barnesHut: {
+            gravitationalConstant: -80000, // 중력값
+            // springConstant: 0.115, // 스프링 강도
+            // avoidOverlap: 1,
+          },
+          minVelocity: 10,
+        },
+
+
+        // 링크선길이 없을때 군집.
+        layout: { improvedLayout: false },
+
+        interaction: {
+          tooltipDelay: 200,
+        },
+        // manipulation: {
+        //   deleteNode: true
+        // },
+        nodes: {
+          shape:'circle',
+          scaling: {
+            min: 20,
+            max: 100,
+            label: {
+              enabled: true,
+              min: 10,
+              max: 50
+            }
+          },
+          font: {
+            size: 12,
+            face: '"Noto Sans", "-apple-system","BlinkMacSystemFont","Malgun Gothic","맑은 고딕","helvetica","Apple SD Gothic Neo","sans-serif"',
+            color: 'white'
+          },
+          borderWidth: 0,
+          borderWidthSelected: 5,
+          color: {
+            background: '#ffcd00',
+            highlight: '#25265f'
+          },
+          // margin: {
+          //   left: 10,
+          //   right: 10
+          // }
+        },
+        edges: {
+          color:{
+            color: '#E9E9E9',
+            highlight: '#C4C4C4'
+          },
+          width: 0.15,
+          smooth: {
+            type: 'straightCross'
+          }
+        }
+      }
+    }
+  }),
+
+  methods: {
+
+    // 노드 선택시
+    onSelectNode({ nodes }) {
+      if (!nodes || !nodes.length) return;
+      console.log('onSelectNode',nodes)
+      const [selectedNodeId] = nodes;
+      console.log('selectedNodeId', selectedNodeId)
+      const foundNode = this.findNode(selectedNodeId);
+      this.setNodeFontColor(foundNode, 'white');
+      this.setSelectedNodeId(selectedNodeId)
+    },
+
+    // 노드 선택 해제시(다른 노드 선택 포함)
+    onDeselectNode({ previousSelection: { nodes } }) {
+      if (!nodes) return;
+      const [prevNode] = nodes;
+      // console.log('prevNodeId',prevNodeId)
+      this.setNodeFontColor(prevNode,'black')
+
+      // if (!nodes) return;
+      // const [prevSelectedNodeId] = nodes;
+      // const foundNode = this.findNode(prevSelectedNodeId);
+      // this.setNodeFontColor(foundNode, 'black')
+    },
+
+    onDragStart(param) {
+      if (!param.nodes) return;
+      // 현재 노드 폰트컬러 변경
+      this.onSelectNode(param)
+
+      // 클릭없이 드래깅되는 경우 대비
+      const [draggedNodeId] = param.nodes;
+      this.resetNodeFontColor(draggedNodeId)
+
+    },
+
+    // 폰트색상 초기화
+    resetNodeFontColor(exceptNodeId) {
+      // const nodes = this.network.ref.body.nodes;
+      const nodes = window.vis.body.nodes
+      const nodeKeys = Object.keys(nodes);
+      nodeKeys.forEach(key => {
+        if (nodes[key].options.font.color === 'white' && exceptNodeId !== nodes[key].id) {
+          this.setNodeFontColor(nodes[key], 'black')
+        }
+      })
+    },
+
+    // 현재 선택된 노드아이디 변경
+    setSelectedNodeId(nodeId) {
+      if (nodeId) {
+        this.network.selectedNodeId = nodeId;
+      }
+    },
+
+    // 지정된 노드의 폰트 색상 변경
+    setNodeFontColor(node, fontColor='black') {
+      console.log('setColor node:', node)
+      node.setOptions({
+        font: {
+          color: fontColor
+        }
+      })
+      // console.log('orgColor', color)
+      // eslint-disable-next-line no-unused-vars
+      // color = fontColor;
+
+      // console.log(node)
+      // if (node) {
+      //   node.font.color = fontColor;
+      // }
+    },
+
+    // 그래프 생성 완료시
+    onFinishDrawing() {
+      if (!this.network.isLoaded) {
+        this.network.isLoaded = true;
+      }
+    },
+
+    // 현재 선택된 노드 삭제
+    removeCurrSelectedNode() {
+      window.vis.deleteSelected();
+      window.vis.redraw()
+      console.log('window.vis',window.vis)
+      // this.network.ref.deleteSelected();
+      // this.$refs.network.deleteSelected()
+      const [selectedNodeId] = this.network.ref.getSelectedNodes();
+      const nodeIdx = this.network.nodes.findIndex(node => node.id === selectedNodeId);
+      this.network.nodes = this.network.nodes.splice(nodeIdx, 1)
+      // // console.log('this.$refs.network.nodes.splice(nodeIdx, 1)', this.$refs.network.nodes.splice(nodeIdx, 1))
+      // //
+      // //
+      // // console.log('network', this.$refs.network)
+      // // this.$refs.network.redraw();
+      // // if (!this.network.selectedNodeId) return;
+      //
+      // const foundIndex = this.network.nodes.findIndex(node => node.id === selectedNodeId);
+      // // const foundIndex = this.network.ref.nodes.findIndex(node => node.id === selectedNodeId);
+      // // console.log('foundIndex',foundIndex)
+      // if (foundIndex >= 0) {
+      //   this.network.nodes.splice(foundIndex, 1)
+      //   console.log('after delete', this.network.ref)
+      //   // this.$refs.network.deleteSelected()
+      //   //
+      // }
+    },
+
+    // 지정된 노드 객체 반환
+    findNode(nodeId) {
+      if (!nodeId) return null;
+      return window.vis.body.nodes[nodeId];
+      // return this.network.ref.body.nodes[nodeId]
+      // return this.network.nodes.find(node => node.id === nodeId)
+      // console.log('nodeId',nodeId)
+      // console.log('this.network.ref.findNode(nodeId)', this.network.ref.findNode(nodeId))
+      // return this.network.ref.findNode(nodeId)
+    },
+
+    addEdge() {
+      const n1 = Math.floor(Math.random() * this.nodes.length);
+      const n2 = Math.floor(Math.random() * this.nodes.length);
+      this.edges.push({
+        id: `${this.nodes[n1].id}-${this.nodes[n2].id}`,
+        from: this.nodes[n1].id,
+        to: this.nodes[n2].id
+      });
+    },
+
+    // 네트워크 그래프 다운로드
+    async downloadImage() {
+      let elementById =document.querySelector('#visNetwork > div > canvas')
+      await downloadHtmlToImg(elementById,'chart')
+
+    }
+  },
+
+
 }
+
 </script>
 
-<style scoped>
-#mynetwork {
-  width: 900px;
-  height: 900px;
-  border: 1px solid lightgray;
+<style >
+.wrapper {
+  padding: 20px 50px;
+  text-align: center;
+}
+.events {
+  text-align: left;
+  height: 70px;
+}
+.network {
+  height: 80vh;
+  width: 80vw;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+}
+.downloadBtn {
+  border: 1px solid blue;
+}
+div.vis-tooltip {
+  color: white;
+  border: 2px solid white;
+  background-color: #0D6DB3;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  /*display: none;*/
+  /*position: absolute;*/
+  z-index: 100;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#graphDiv {
+  border: 1px solid black;
+  width: 80vw;
+  height: 80vh;
 }
 </style>
